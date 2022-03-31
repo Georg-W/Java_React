@@ -13,6 +13,6 @@ public class AppController {
     @GetMapping("/")
     public String homePage(Model model) {
         model.addAttribute("appName", appName);
-        return "app";
+        return "forward:/index.html";
     }
 }
