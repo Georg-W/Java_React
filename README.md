@@ -38,3 +38,11 @@ Run Docker file
 sudo docker run -p 8081:8081 georgwestner/java_react:latest
 ```
 
+Docker-compose
+```
+docker-compose build
+docker-compose up
+docker-compose down
+```
+
+
