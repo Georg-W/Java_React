@@ -11,6 +11,14 @@ src/
     ui/ React App
 ```
 
+## UI Development
+
+```
+cd src/ui
+npm start
+=> hot-reloading development on localhost:3000
+```
+
 ## Maven
 
 Run the application using maven
