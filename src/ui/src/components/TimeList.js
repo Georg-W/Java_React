@@ -9,69 +9,84 @@ import Button from 'react-bootstrap/Button';
 
 class TimeList extends React.Component {
 
-    handleClick(event){
+    constructor(props, context) {
+        super(props);
+        this.state = {
+          email: '',
+          error: null,
+          isLoaded: false,
+          items: []
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+    handleChange(event) {
+        this.setState({email: event.target.value});
+    }
+
+    handleSubmit(event) {
         event.preventDefault();
 
-        console.log("handleClick");
-        console.log(event.target.elements);
+        fetch("http://0.0.0.0:8081/time/" + this.state.email)
+          .then(res => res.json())
+          .then(
+            (result) => {
+              this.setState({
+                isLoaded: true,
+                items: result
+              });
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+            }
+          )
     }
-
-    constructor(props, context) {
-        super(props, context);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-
 
     render() {
-        return (
-            <Container>
-                <Row>
-                    <Form>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
-                      </Form.Group>
-                      <Button variant="primary" onClick={this.handleClick}>
-                        Search me
-                      </Button>
-                    </Form>
-                </Row>
-                <Row>
+
+        const { error, isLoaded, items } = this.state;
+
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        }
+        else {
+            return (
+                <Container>
+                    <h3>List current entries</h3>
+                    <form onSubmit={this.handleSubmit} >
+                        <label>
+                        Email:
+                        <input type="text" value={this.state.email} onChange={this.handleChange} />
+                        </label>
+                        <input type="submit" value="Search" />
+                    </form>
                     <Table striped bordered hover size="sm">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Username</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td colSpan={2}>Larry the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
+                        <thead>
+                            <tr>
+                            <th>Email</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {items.map(item => (
+                            <tr>
+                            <td>{item.email}</td>
+                            <td>{item.start}</td>
+                            <td>{item.end}</td>
+                            </tr>
+                            ))}
+                        </tbody>
                     </Table>
-                </Row>
-            </Container>
-        )
+                </Container>
+            );
+        }
     }
+
 }
 
 export default TimeList
