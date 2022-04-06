@@ -11,6 +11,19 @@ src/
     ui/ React App
 ```
 
+## Getting started guide / Deployment
+```
+Install JDK 17 on local machine (otherwise change base image in dockerfile)
+The react app build output was commited into the resource folder and doesnt have to be compiled
+
+(optional) compile the java app - pre-compiled package is in the target/ folder
+./mvnw install
+docker-compose build
+docker-compose up
+
+http://localhost:8081/ Open in your Browser to see the UI output
+```
+
 ## UI Development
 
 ```
