@@ -1,6 +1,5 @@
 package georg.westner.java_react;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -10,9 +9,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 class TimeController {
@@ -32,6 +28,7 @@ class TimeController {
         TimeEntry[] entries
                 = restTemplate.getForObject(timeResourceUrl, TimeEntry[].class);
         return entries;
+
     }
 
     @PostMapping(value="/create", consumes = "application/json", produces = "application/json")

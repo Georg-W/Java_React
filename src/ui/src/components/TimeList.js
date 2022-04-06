@@ -1,11 +1,6 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
 
 class TimeList extends React.Component {
 
@@ -32,15 +27,16 @@ class TimeList extends React.Component {
           .then(res => res.json())
           .then(
             (result) => {
-              this.setState({
+            if (result.error){
+                  this.setState({
+                    isLoaded: true,
+                    error: result.error
+                  });
+            }
+
+            this.setState({
                 isLoaded: true,
                 items: result
-              });
-            },
-            (error) => {
-              this.setState({
-                isLoaded: true,
-                error
               });
             }
           )
@@ -51,12 +47,14 @@ class TimeList extends React.Component {
         const { error, isLoaded, items } = this.state;
 
         if (error) {
-            return <div>Error: {error.message}</div>;
-        }
-        else {
             return (
-                <Container>
+            <Container>
+                <div className="d-grid gap-2">Error: {error} This is an unknown email address</div>;
+                <div className="d-grid gap-2">
+                  <div className="p-3 bg-light border">
                     <h3>List current entries</h3>
+                  </div>
+                  <div className="p-3 bg-light border">
                     <form onSubmit={this.handleSubmit} >
                         <label>
                         Email:
@@ -64,6 +62,28 @@ class TimeList extends React.Component {
                         </label>
                         <input type="submit" value="Search" />
                     </form>
+                  </div>
+                </div>
+            </Container>
+            )
+        }
+        else {
+            return (
+                <Container>
+                    <div className="d-grid gap-2">
+                      <div className="p-3 bg-light border">
+                        <h3>List current entries</h3>
+                      </div>
+                      <div className="p-3 bg-light border">
+                        <form onSubmit={this.handleSubmit} >
+                            <label>
+                            Email:
+                            <input type="text" value={this.state.email} onChange={this.handleChange} />
+                            </label>
+                            <input type="submit" value="Search" />
+                        </form>
+                      </div>
+                    </div>
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
@@ -83,10 +103,9 @@ class TimeList extends React.Component {
                         </tbody>
                     </Table>
                 </Container>
-            );
+            )
         }
     }
-
 }
 
 export default TimeList
